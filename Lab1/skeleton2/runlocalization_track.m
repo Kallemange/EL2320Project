@@ -73,6 +73,7 @@ t = 0;
 enc = [0;0];
 %%
 % Main loop
+feature_list=zeros(2,1);
 while 1
     count = count + 1;
     if count > length(flines)
@@ -101,9 +102,8 @@ while 1
     end
     u = calculate_odometry(denc(1),denc(2),E_T,B,R_R,R_L,delta_t,mu);
     z = observe_features(truepose, M);
-    
+    feature_list=place_features(z, mu, feature_list);
     %z = [ranges';bearings'];
-    
     known_associations = ids';
     [mu,sigma,outliers] = ekf_localize(mu,sigma,R,Q,z,known_associations,u,M,Lambda_M,Map_IDS,count);
     total_outliers = total_outliers + outliers;
