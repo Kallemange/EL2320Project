@@ -100,7 +100,10 @@ while 1
         ids = [];
     end
     u = calculate_odometry(denc(1),denc(2),E_T,B,R_R,R_L,delta_t,mu);
-    z = [ranges';bearings'];
+    z = observe_features(truepose, M);
+    
+    %z = [ranges';bearings'];
+    
     known_associations = ids';
     [mu,sigma,outliers] = ekf_localize(mu,sigma,R,Q,z,known_associations,u,M,Lambda_M,Map_IDS,count);
     total_outliers = total_outliers + outliers;
